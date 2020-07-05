@@ -6,6 +6,7 @@ const Telegraf = require('telegraf')
 const commandParts = require('telegraf-command-parts')
 
 const token = process.env.BOT_TOKEN
+const escaped = '_*[]()~`>#+-=|{}.!'
 const linkFormat = process.env.LINK_FORMAT || 'https://hanja.dict.naver.com/search?query={query}'
 const formatLink = (c) => sf(linkFormat, {query: c})
 const formatMarkup = (c) => sf('[{c}]({link})', {c, link: formatLink(c)})
@@ -13,6 +14,7 @@ const formatMarkup = (c) => sf('[{c}]({link})', {c, link: formatLink(c)})
 const makeReply = (text) => text.split('')
         .map((c) => ({c, block: blocks.fromCodePoint(c.charCodeAt(0)).name}))
         .map(({c, block}) => block.toLowerCase().includes('ideographs') ? formatMarkup(c) : c)
+        .map((c) => escaped.includes(c) ? `\\${c}` : c)
         .join('')
 
 const hanjaCommand = (ctx) => {
