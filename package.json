@@ -2,18 +2,16 @@
   "name": "hanja-tg-bot",
   "version": "0.0.1",
   "description": "",
-  "main": "index.js",
+  "main": "src/index.js",
   "scripts": {
-    "start": "node index.js"
+    "start": "node src/index.js"
   },
   "keywords": [],
   "author": "",
   "license": "Apache-2.0",
   "dependencies": {
     "dotenv": "^8.2.0",
-    "sf": "^0.2.0",
     "telegraf": "^3.38.0",
-    "telegraf-command-parts": "^1.0.3",
-    "unicode-blocks": "^2.0.4"
+    "telegraf-command-parts": "^1.0.3"
   }
 }
