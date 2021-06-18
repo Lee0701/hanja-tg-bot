@@ -1,14 +1,12 @@
 
 const {buildDict, buildFreq} = require('./convert-dictionary')
 
-const dic2 = buildDict('dic/dic2.txt')
-const dic4 = buildDict('dic/dic4.txt')
+const dic = buildDict('dic/hanja.txt')
 
 const dic2Freq = buildFreq('dic/freq-hanja.txt')
 const dic4Freq = buildFreq('dic/freq-hanjaeo.txt')
 
-const search = (key, dic, freq) => (dic[key] || []).sort((a, b) => (freq[b] || 0) - (freq[a] || 0))
-const searchAll = (key) => [...search(key, dic4, dic4Freq), key, ...search(key, dic2, dic2Freq)]
+const search = (key) => (dic[key] || []).sort((a, b) => (dic4Freq[b] || dic2Freq[b] || 0) - (dic4Freq[a] || dic2Freq[a] || 0)).slice(0, 9)
 
 const convertHanja = (str) => {
     if(str.includes(' ')) {
@@ -36,11 +34,14 @@ const convertHanja = (str) => {
         } else {
             for(let j = str.length; j > i; j--) {
                 const key = str.slice(i, j)
-                const result = searchAll(key)
-                if(result.length > 1) {
+                let result = search(key)
+                if(result.length) {
                     // 이미 變換結果 目錄이 있는 境遇, 첫 候補를 選擇
                     if(results.length) prefix += results[0]
-                    results = result
+                    // 原本(한글) 候補도 追加
+                    result.unshift(key)
+                    // 結果中 아홉個만 取함
+                    results = result.slice(0, 9)
                     i += j - i
                     found = true
                 }
