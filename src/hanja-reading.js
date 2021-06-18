@@ -1,4 +1,4 @@
-const {buildDict} = require('./dictionary')
+const {buildDict} = require('./reading-dictionary')
 const dic2 = buildDict('dic/dic2.txt')
 const dic4 = buildDict('dic/dic4.txt')
 const jp = buildDict('dic/jp.txt')
