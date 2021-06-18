@@ -11,6 +11,7 @@
   "license": "Apache-2.0",
   "dependencies": {
     "dotenv": "^8.2.0",
+    "sha.js": "^2.4.11",
     "telegraf": "^3.38.0",
     "telegraf-command-parts": "^1.0.3"
   }

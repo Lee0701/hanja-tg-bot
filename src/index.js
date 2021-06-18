@@ -3,6 +3,9 @@ require('dotenv').config()
 const Telegraf = require('telegraf')
 const commandParts = require('telegraf-command-parts')
 
+const shajs = require('sha.js')
+const sha256 = (text) => shajs('sha256').update(text).digest('hex')
+
 const {convertHanjaReading} = require('./hanja-reading')
 const {convertHanja} = require('./hanja-convert')
 
@@ -23,7 +26,17 @@ const toHangCommand = (ctx) => {
 }
 
 const inlineQuery = async ({inlineQuery, answerInlineQuery}) => {
-    const {id, query} = inlineQuery
+    const {query} = inlineQuery
+    if(!query) return
+    const results = convertHanja(query)
+    if(!results || !results.every((result) => result)) return
+    const inlineQueryResult = results.map((str, i) => ({
+        type: 'article',
+        id: sha256(str).slice(0, 64),
+        title: (i + 1) + ': ' + str,
+        input_message_content: {message_text: str},
+    }))
+    return answerInlineQuery(inlineQueryResult)
 }
 
 const bot = new Telegraf(token)
